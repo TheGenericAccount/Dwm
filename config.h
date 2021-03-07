@@ -10,8 +10,8 @@ static const unsigned int gappov    = 0;       /* vert outer gap between windows
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Noto Sans Black:size=10" };
-static const char dmenufont[]       = "Noto Sans Black:size=10";
+static const char *fonts[]          = { "Noto Sans Black:size=7" };
+static const char dmenufont[]       = "Noto Sans Black:size=7";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -117,7 +117,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_i,      setlayout,      {.v = &layouts[3]} },
-	{ MODKEY,                       XK_o,      setlayout,      {.v = NULL} },
+	{ MODKEY,                       XK_o,      setlayout,      {.v = &layouts[13]}},
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
