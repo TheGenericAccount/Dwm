@@ -10,7 +10,7 @@ static const unsigned int gappov    = 0;       /* vert outer gap between windows
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Noto Sans Black:size=7" };
+static const char *fonts[]          = { "Noto Sans Black:size=7", "Font Awesome 5 Brands Regular:size=7","Font Awesome 5 Free Solid:size=7"};
 static const char dmenufont[]       = "Noto Sans Black:size=7";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
@@ -24,7 +24,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "1: ", "2: ", "3: ", "4: ","5: ", "6: ", "7:", "8: ", "9: " };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -34,6 +34,13 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	{ "st",       NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "Brave",    NULL,       NULL,       1 << 3,       0,           -1 },
+	{ "Teams",    NULL,       NULL,       1 << 5,       0,           -1 },
+	{ "Caprine",  NULL,       NULL,       1 << 6,       0,            1 },
+	{ NULL,   "libreoffice",  NULL,       1 << 4,       0,           -1 },
+	{ "Droidcam", NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "zoom",     NULL,       NULL,       1 << 5,       0,           -1 },
 };
 
 /* layout(s) */
@@ -67,8 +74,8 @@ static const Layout layouts[] = {
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+	{ MODKEY|ShiftMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+	{ MODKEY|ControlMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
