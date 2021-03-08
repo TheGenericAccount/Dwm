@@ -1,0 +1,36 @@
+rm -f dwm drw.o dwm.o util.o dwm-6.2.tar.gz
+dwm build options:
+CFLAGS   = -std=c99 -pedantic -Wall -Wno-deprecated-declarations -Os -I/usr/X11R6/include -I/usr/include/freetype2 -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -DVERSION="6.2" -DXINERAMA
+LDFLAGS  = -L/usr/X11R6/lib -lX11 -lXinerama -lfontconfig -lXft
+CC       = cc
+cc -c -std=c99 -pedantic -Wall -Wno-deprecated-declarations -Os -I/usr/X11R6/include -I/usr/include/freetype2 -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -DVERSION=\"6.2\" -DXINERAMA drw.c
+cc -c -std=c99 -pedantic -Wall -Wno-deprecated-declarations -Os -I/usr/X11R6/include -I/usr/include/freetype2 -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -DVERSION=\"6.2\" -DXINERAMA dwm.c
+In file included from dwm.c:278:
+config.h:129:11: error: ‘ShiftMash’ undeclared here (not in a function); did you mean ‘ShiftMask’?
+  129 |  { MODKEY|ShiftMash,                       XK_y,      setlayout,      {.v = &layouts[11]} },
+      |           ^~~~~~~~~
+      |           ShiftMask
+In file included from config.h:52,
+                 from dwm.c:278:
+vanitygaps.c:132:1: warning: ‘incrivgaps’ defined but not used [-Wunused-function]
+  132 | incrivgaps(const Arg *arg)
+      | ^~~~~~~~~~
+vanitygaps.c:121:1: warning: ‘incrihgaps’ defined but not used [-Wunused-function]
+  121 | incrihgaps(const Arg *arg)
+      | ^~~~~~~~~~
+vanitygaps.c:110:1: warning: ‘incrovgaps’ defined but not used [-Wunused-function]
+  110 | incrovgaps(const Arg *arg)
+      | ^~~~~~~~~~
+vanitygaps.c:99:1: warning: ‘incrohgaps’ defined but not used [-Wunused-function]
+   99 | incrohgaps(const Arg *arg)
+      | ^~~~~~~~~~
+vanitygaps.c:88:1: warning: ‘incrogaps’ defined but not used [-Wunused-function]
+   88 | incrogaps(const Arg *arg)
+      | ^~~~~~~~~
+vanitygaps.c:77:1: warning: ‘incrigaps’ defined but not used [-Wunused-function]
+   77 | incrigaps(const Arg *arg)
+      | ^~~~~~~~~
+vanitygaps.c:66:1: warning: ‘incrgaps’ defined but not used [-Wunused-function]
+   66 | incrgaps(const Arg *arg)
+      | ^~~~~~~~
+make: *** [Makefile:18: dwm.o] Error 1

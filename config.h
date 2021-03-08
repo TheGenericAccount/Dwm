@@ -10,8 +10,8 @@ static const unsigned int gappov    = 0;       /* vert outer gap between windows
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Noto Sans Black:size=7", "Font Awesome 5 Brands Regular:size=7","Font Awesome 5 Free Solid:size=7"};
-static const char dmenufont[]       = "Noto Sans Black:size=7";
+static const char *fonts[]          = { "Noto Sans Black:size=5", "Font Awesome 5 Brands Regular:size=5","Font Awesome 5 Free Solid:size=5"};
+static const char dmenufont[]       = "Noto Sans Black:size=5";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -37,7 +37,8 @@ static const Rule rules[] = {
 	{ "st",       NULL,       NULL,       1 << 1,       0,           -1 },
 	{ "Brave",    NULL,       NULL,       1 << 3,       0,           -1 },
 	{ "Teams",    NULL,       NULL,       1 << 5,       0,           -1 },
-	{ "Caprine",  NULL,       NULL,       1 << 6,       0,            1 },
+	{ "Caprine",  NULL,       NULL,       1 << 6,       0,            0 },
+	{ "discord",  NULL,       NULL,       1 << 6,       0,            0 },
 	{ NULL,   "libreoffice",  NULL,       1 << 4,       0,           -1 },
 	{ "Droidcam", NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "zoom",     NULL,       NULL,       1 << 5,       0,           -1 },
@@ -121,10 +122,16 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,                       XK_g,      defaultgaps,    {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
+
 	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_i,      setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_o,      setlayout,      {.v = &layouts[13]}},
+	{ MODKEY|ShiftMask,                       XK_y,      setlayout,      {.v = &layouts[11]} },
+	{ MODKEY|ShiftMask,                       XK_u,      setlayout,      {.v = &layouts[4]} },
+	{ MODKEY|ShiftMask,                       XK_i,      setlayout,      {.v = &layouts[7]} },
+	{ MODKEY|ShiftMask,                       XK_o,      setlayout,      {.v = &layouts[13]}},
+
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
