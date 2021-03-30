@@ -127,6 +127,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
 	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = languagecmd } },
+	{ MODKEY, 	                XK_F4,      spawn,          {.v = languagecmd } },
 
 	{ 0,        	XF86XK_AudioRaiseVolume,   spawn,          {.v = incrvolcmd } },
 	{ 0,        	XF86XK_AudioLowerVolume,   spawn,          {.v = decrvolcmd } },
