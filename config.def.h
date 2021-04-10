@@ -18,6 +18,7 @@ static char normfgcolor[]           = "#bbbbbb";
 static char selfgcolor[]            = "#eeeeee";
 static char selbordercolor[]        = "#005577";
 static char selbgcolor[]            = "#005577";
+static const char term[]            = "alacritty";
 
 enum { SchemeNorm, SchemeSel }; /* color schemes */
 
@@ -31,10 +32,10 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *sptermcmd[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *sprangercmd[] = {"st", "-n", "spranger", "-g", "120x34", "-e", "ranger", NULL };
-const char *spcalccmd[] = {"st", "-n", "spcalc", "-g", "20x20", "-e", "'calc' '-d'", NULL };
-const char *spcmuscmd[] = {"st", "-n", "spcmus", "-g", "120x34", "-e", "cmus", NULL };
+const char *sptermcmd[] = {term, "--class", "spterm", NULL };
+const char *sprangercmd[] = {term, "--class", "spranger", "-e", "ranger", NULL };
+const char *spcalccmd[] = {term, "--class", "spcalc", "-e", "calc", "-d", NULL };
+const char *spcmuscmd[] = {term, "--class", "spcmus", "cmus", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      sptermcmd},
@@ -55,7 +56,7 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ NULL,       "st",       NULL,       1 << 1,       0,           -1 },
+	{ NULL,       term,       NULL,       1 << 1,       0,           -1 },
 	{ "Brave",    NULL,       NULL,       1 << 3,       0,           -1 },
 	{ "Teams",    NULL,       NULL,       1 << 5,       0,           -1 },
 	{ "Caprine",  NULL,       NULL,       1 << 6,       0,            1 },
@@ -113,14 +114,14 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { term, NULL };
 static const char *browsercmd[]  = { "brave", NULL };
-static const char *fmcmd[]  = { "st", "-e", "ranger", NULL };
+static const char *fmcmd[]  = { term, "-e", "ranger", NULL };
 static const char *languagecmd[]  = { "language.sh", "1", NULL };
 
-static const char *incrvolcmd[]  = { "volume.sh", "+", NULL };
-static const char *decrvolcmd[]  = { "volume.sh", "-", NULL };
-static const char *mutevolcmd[]  = { "volume.sh", "3", NULL };
+static const char *incrvolcmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/volume.sh", "+", NULL };
+static const char *decrvolcmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/volume.sh", "-", NULL };
+static const char *mutevolcmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/volume.sh", "3", NULL };
 
 static const char *mediatogglecmd[]= { "playerctl", "play-pause", NULL };
 static const char *mediapausecmd[] = { "playerctl", "pause", NULL };
@@ -260,7 +261,7 @@ static Button buttons[] = {
 	{ ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
+	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
