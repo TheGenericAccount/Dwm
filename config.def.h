@@ -3,6 +3,7 @@
 /* appearance */
 static unsigned int borderpx  = 5;        /* border pixel of windows */
 static unsigned int snap      = 0;       /* snap pixel */
+static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static unsigned int gappih    = 20;       /* horiz inner gap between windows */
 static unsigned int gappiv    = 20;       /* vert inner gap between windows */
 static unsigned int gappoh    = 20;       /* horiz outer gap between windows and screen edge */
@@ -53,24 +54,26 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ NULL,       term,       NULL,       1 << 1,       0,           -1 },
-	{ "Brave",    NULL,       NULL,       1 << 3,       0,           -1 },
-	{ "Teams",    NULL,       NULL,       1 << 5,       0,           -1 },
-	{ "Caprine",  NULL,       NULL,       1 << 6,       0,            1 },
-	{ "discord",  NULL,       NULL,       1 << 6,       0,            1 },
-	{ NULL,   "libreoffice",  NULL,       1 << 4,       0,           -1 },
-	{ "Droidcam", NULL,       NULL,       1 << 2,       0,           -1 },
-	{ "zoom",     NULL,       NULL,       1 << 5,       0,           -1 },
-	{ "Apprun",   NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "Godot",    NULL,       NULL,       1 << 7,       0,           -1 },
+	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Gimp",     NULL,       NULL,       1 << 5,       0, 		  0,    	0,           -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 8,       0, 		  0, 		0,           -1 },
+	{ NULL,       term,       NULL,       1 << 1,       0, 		  1, 		0,           -1 },
+	{ "Brave",    NULL,       NULL,       1 << 3,       0, 		  0, 		0,           -1 },
+	{ "Teams",    NULL,       NULL,       1 << 5,       0, 		  0, 		0,           -1 },
+	{ "Caprine",  NULL,       NULL,       1 << 6,       0, 		  0, 		0,            1 },
+	{ "discord",  NULL,       NULL,       1 << 6,       0, 		  0, 		0,            1 },
+	{ NULL,   "libreoffice",  NULL,       1 << 4,       0, 		  0, 		0,           -1 },
+	{ "Droidcam", NULL,       NULL,       1 << 2,       0, 		  0, 		0,           -1 },
+	{ "zoom",     NULL,       NULL,       1 << 5,       0, 		  0, 		0,           -1 },
+	{ "Apprun",   NULL,       NULL,       1 << 8,       0, 		  0, 		0,           -1 },
+	{ "Godot",    NULL,       NULL,       1 << 7,       0, 		  0, 		0,           -1 },
+                                                                                         
+	{ NULL,       "spterm",	  NULL,	      SPTAG(0),     1, 		  0, 		0,	    -1 },
+	{ NULL,       "spranger", NULL,	      SPTAG(1),     1, 		  0, 		0,	    -1 },
+	{ NULL,       "spcalc",   NULL,	      SPTAG(2),     1, 		  0, 		0,	    -1 },
+	{ NULL,       "spcmus",   NULL,	      SPTAG(3),     1, 		  0, 		0,	    -1 },
 
-	{ NULL,       "spterm",	  NULL,	      SPTAG(0),     1,		 -1 },
-	{ NULL,       "spranger", NULL,	      SPTAG(1),     1,		 -1 },
-	{ NULL,       "spcalc",   NULL,	      SPTAG(2),     1,		 -1 },
-	{ NULL,       "spcmus",   NULL,	      SPTAG(3),     1,		 -1 },
+	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
 /* layout(s) */

@@ -1,20 +1,29 @@
 --- dwm.c
 +++ dwm.c
-@@ -703,7 +703,7 @@ drawbar(Monitor *m)
- 	Client *c;
+@@ -40,6 +40,12 @@
+ #include <X11/extensions/Xinerama.h>
+ #endif /* XINERAMA */
+ #include <X11/Xft/Xft.h>
++#include <X11/Xlib-xcb.h>
++#include <xcb/res.h>
++#ifdef __OpenBSD__
++#include <sys/sysctl.h>
++#include <kvm.h>
++#endif /* __OpenBSD */
  
- 	/* draw status first so it can be overdrawn by tags later */
--	if (m == selmon) { /* status is only drawn on selected monitor */
-+	if (m == statmon) { /* status is only drawn on user-defined status monitor */
- 		drw_setscheme(drw, scheme[SchemeNorm]);
- 		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
- 		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
-@@ -1998,7 +2004,7 @@ updatestatus(void)
- {
- 	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
- 		strcpy(stext, "dwm-"VERSION);
--	drawbar(selmon);
-+	drawbar(statmon);
- }
- 
- void
+ #include "drw.h"
+ #include "util.h"
+@@ -2353,10 +2574,12 @@ main(int argc, char *argv[])
+ 		fputs("warning: no locale support\n", stderr);
+ 	if (!(dpy = XOpenDisplay(NULL)))
+ 		die("dwm: cannot open display");
++	if (!(xcon = XGetXCBConnection(dpy)))
++		die("dwm: cannot get xcb connection\n");
+ 	checkotherwm();
+ 	setup();
+ #ifdef __OpenBSD__
+-	if (pledge("stdio rpath proc exec", NULL) == -1)
++	if (pledge("stdio rpath proc exec ps", NULL) == -1)
+ 		die("pledge");
+ #endif /* __OpenBSD__ */
+ 	scan();
