@@ -166,6 +166,7 @@ ResourcePref resources[] = {
 
 static Key keys[] = {
 	/* eifier                     key        function        argument */
+	{ MODKEY,                       AnyKey,    spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = fmcmd } },
