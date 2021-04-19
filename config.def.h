@@ -36,7 +36,7 @@ typedef struct {
 const char *sptermcmd[] = {term, "--class", "spterm", NULL };
 const char *sprangercmd[] = {term, "--class", "spranger", "-e", "ranger", NULL };
 const char *spcalccmd[] = {term, "--class", "spcalc", "-e", "calc", "-d", NULL };
-const char *spcmuscmd[] = {term, "--class", "spcmus", "cmus", NULL };
+const char *spcmuscmd[] = {term, "--class", "spcmus", "-e", "cmus", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      sptermcmd},
@@ -47,7 +47,7 @@ static Sp scratchpads[] = {
 
 
 /* tagging */
-static const char *tags[] = { "1: ", "2: ", "3: ", "4: 爵","5: ", "6: 拾", "7:", "8: ", "9: " };
+static const char *tags[] = { "", "", "", "爵","", "拾", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -67,6 +67,8 @@ static const Rule rules[] = {
 	{ "zoom",     NULL,       NULL,       1 << 5,       0, 		  0, 		0,           -1 },
 	{ "Apprun",   NULL,       NULL,       1 << 8,       0, 		  0, 		0,           -1 },
 	{ "Godot",    NULL,       NULL,       1 << 7,       0, 		  0, 		0,           -1 },
+
+	{ "MuPDF",    NULL,       NULL,       0,            0, 		  0, 		1,           -1 },
                                                                                          
 	{ NULL,       "spterm",	  NULL,	      SPTAG(0),     1, 		  0, 		0,	    -1 },
 	{ NULL,       "spranger", NULL,	      SPTAG(1),     1, 		  0, 		0,	    -1 },
@@ -120,8 +122,10 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { term, NULL };
 static const char *browsercmd[]  = { "brave", NULL };
+static const char *teamscmd[]  = { "teams", NULL };
+static const char *vwcmd[]  = {term, "-e", "nvim", "-c", "VimwikiIndex", NULL };
 static const char *fmcmd[]  = { term, "-e", "ranger", NULL };
-static const char *languagecmd[]  = { "language.sh", "1", NULL };
+static const char *languagecmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/language.sh", "1", NULL };
 
 static const char *incrvolcmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/volume.sh", "+", NULL };
 static const char *decrvolcmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/volume.sh", "-", NULL };
@@ -169,6 +173,8 @@ static Key keys[] = {
 	{ MODKEY,                       AnyKey,    spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
+	{ MODKEY,                       XK_s,      spawn,          {.v = teamscmd } },
+	{ MODKEY,                       XK_w,      spawn,          {.v = vwcmd } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = fmcmd } },
 	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = languagecmd } },
 	{ MODKEY, 	                XK_F4,      spawn,          {.v = languagecmd } },
