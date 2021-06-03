@@ -55,11 +55,16 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Gimp",     NULL,       NULL,       1 << 5,       0, 		  0,    	0,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0, 		  0, 		0,           -1 },
 	{ NULL,       term,       NULL,       1 << 1,       0, 		  1, 		0,           -1 },
 	{ "Brave",    NULL,       NULL,       1 << 3,       0, 		  0, 		0,           -1 },
+	{ "Sxiv",    NULL,        NULL,       1 << 4,       0, 		  0, 		0,           -1 },
+	{ "mpv",     NULL,        NULL,       1 << 8,       0, 		  0, 		0,           -1 },
+	{ NULL,  "Email",         NULL,       1 << 2,       0, 		  0, 		0,           -1 },
+	{ NULL,  "FileManager",   NULL,       1 << 2,       0, 		  0, 		0,           -1 },
+	{ NULL,  "Calendar",      NULL,       1 << 7,       0, 		  0, 		0,           -1 },
 	{ "Teams",    NULL,       NULL,       1 << 5,       0, 		  0, 		0,           -1 },
+	{ NULL,       NULL,"Microsoft Teams Notification", 1 << 5,   1,	  0, 		0,           -1 },
 	{ "Caprine",  NULL,       NULL,       1 << 6,       0, 		  0, 		0,            1 },
 	{ "discord",  NULL,       NULL,       1 << 6,       0, 		  0, 		0,            1 },
 	{ NULL,   "libreoffice",  NULL,       1 << 4,       0, 		  0, 		0,           -1 },
@@ -68,6 +73,7 @@ static const Rule rules[] = {
 	{ "Apprun",   NULL,       NULL,       1 << 8,       0, 		  0, 		0,           -1 },
 	{ "Godot",    NULL,       NULL,       1 << 7,       0, 		  0, 		0,           -1 },
 
+	{ "Dragon-drag-and-drop", NULL, NULL, 0,            0, 		  0, 		1,           -1 },
 	{ "MuPDF",    NULL,       NULL,       0,            0, 		  0, 		1,           -1 },
                                                                                          
 	{ NULL,       "spterm",	  NULL,	      SPTAG(0),     1, 		  0, 		0,	    -1 },
@@ -124,8 +130,16 @@ static const char *termcmd[]  = { term, NULL };
 static const char *browsercmd[]  = { "brave", NULL };
 static const char *teamscmd[]  = { "teams", NULL };
 static const char *vwcmd[]  = {term, "-e", "nvim", "-c", "VimwikiIndex", NULL };
-static const char *fmcmd[]  = { term, "-e", "ranger", NULL };
-static const char *languagecmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/language.sh", "1", NULL };
+static const char *fmcmd[]  = { term, "--class", "FileManager", "--title" , "File Manager", "-e", "zsh", "-is", "eval", "'lfcd'", NULL };
+static const char *calcmd[]  = { term, "--class", "Calendar", "--title" , "Calcurse", "-e", "calcurse", NULL };
+static const char *emailcmd[]  = { term, "--class", "Email", "--title" , "Neomutt", "-e", "neomutt", NULL };
+//static const char *favouritescmd[] = { term, "--hold", "-e", "/usr/bin/scripts/favourite-files", "launch", "files", NULL };
+static const char *favouritescmd[] = { "/usr/bin/scripts/favourite-files", "launch", "files", NULL };
+static const char *languagechangecmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/language.sh", "1", NULL };
+static const char *languageltcmd[]  = { "setxkbmap", "lt", NULL };
+static const char *languagerucmd[]  = { "setxkbmap", "ru", NULL };
+static const char *languageencmd[]  = { "setxkbmap", "us", NULL };
+static const char *languageupdcmd[]  = { "sigdwmblocks", "2", NULL };
 
 static const char *incrvolcmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/volume.sh", "+", NULL };
 static const char *decrvolcmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/volume.sh", "-", NULL };
@@ -167,17 +181,25 @@ ResourcePref resources[] = {
 		{ "mfact",      	 	FLOAT,   &mfact },
 };
 
-
 static Key keys[] = {
 	/* eifier                     key        function        argument */
 	{ MODKEY,                       AnyKey,    spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
 	{ MODKEY,                       XK_s,      spawn,          {.v = teamscmd } },
+	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = calcmd } },
+	{ MODKEY,                       XK_e,      spawn,          {.v =  emailcmd} },
 	{ MODKEY,                       XK_w,      spawn,          {.v = vwcmd } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = fmcmd } },
-	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = languagecmd } },
-	{ MODKEY, 	                XK_F4,      spawn,          {.v = languagecmd } },
+	{ MODKEY,                       XK_f,      spawn,          {.v = favouritescmd } },
+	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = languagechangecmd } },
+	{ MODKEY, 	                XK_F4,      spawn,          {.v = languagechangecmd } },
+	{ MODKEY, 	                XK_F1,      spawn,          {.v = languageencmd } },
+	{ MODKEY, 	                XK_F1,      spawn,          {.v = languageupdcmd } },
+	{ MODKEY, 	                XK_F2,      spawn,          {.v = languageltcmd } },
+	{ MODKEY, 	                XK_F2,      spawn,          {.v = languageupdcmd } },
+	{ MODKEY, 	                XK_F3,      spawn,          {.v = languagerucmd } },
+	{ MODKEY, 	                XK_F3,      spawn,          {.v = languageupdcmd } },
 
 	{ 0,        	XF86XK_AudioRaiseVolume,   spawn,          {.v = incrvolcmd } },
 	{ 0,        	XF86XK_AudioLowerVolume,   spawn,          {.v = decrvolcmd } },
@@ -195,7 +217,7 @@ static Key keys[] = {
 	{ ControlMask,                  XK_Print,  spawn,          {.v = scrotalltoccmd } },
 
 	{ MODKEY,                       XK_t,      spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_f,      togglebar,      {0} },
+	{ MODKEY,                       XK_a,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_m,      incnmaster,     {.i = +1 } },
@@ -210,7 +232,7 @@ static Key keys[] = {
 	{ NULL,                       NULL,      incrgaps,       {.i = -1 } },
 	{ NULL,	                NULL,      incrigaps,      {.i = +1 } },
 	{ NULL,  		        NULL,      incrigaps,      {.i = -1 } },
-	{ NULL,         	        NULL,      incrogaps,      {.i = +1 } },
+	{ NULL,         	        NULL,      incrogaps,      {.i = +1 } },lcmd
 	{ NULL,                       NULL,      incrogaps,      {.i = -1 } },
 	{ NULL,                       NULL,      incrihgaps,     {.i = +1 } },
 	{ NULL,                       NULL,      incrihgaps,     {.i = -1 } },

@@ -3,6 +3,7 @@
 /* appearance */
 static unsigned int borderpx  = 5;        /* border pixel of windows */
 static unsigned int snap      = 0;       /* snap pixel */
+static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static unsigned int gappih    = 20;       /* horiz inner gap between windows */
 static unsigned int gappiv    = 20;       /* vert inner gap between windows */
 static unsigned int gappoh    = 20;       /* horiz outer gap between windows and screen edge */
@@ -35,7 +36,7 @@ typedef struct {
 const char *sptermcmd[] = {term, "--class", "spterm", NULL };
 const char *sprangercmd[] = {term, "--class", "spranger", "-e", "ranger", NULL };
 const char *spcalccmd[] = {term, "--class", "spcalc", "-e", "calc", "-d", NULL };
-const char *spcmuscmd[] = {term, "--class", "spcmus", "cmus", NULL };
+const char *spcmuscmd[] = {term, "--class", "spcmus", "-e", "cmus", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      sptermcmd},
@@ -46,37 +47,42 @@ static Sp scratchpads[] = {
 
 
 /* tagging */
-static const char *tags[] = { "1: ", "2: ", "3: ", "4: 爵","5: ", "6: 拾", "7:", "8: ", "9: " };
+static const char *tags[] = { "", "", "", "爵","", "拾", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ NULL,       term,       NULL,       1 << 1,       0,           -1 },
-	{ "Brave",    NULL,       NULL,       1 << 3,       0,           -1 },
-	{ "Teams",    NULL,       NULL,       1 << 5,       0,           -1 },
-	{ "Caprine",  NULL,       NULL,       1 << 6,       0,            1 },
-	{ "discord",  NULL,       NULL,       1 << 6,       0,            1 },
-	{ NULL,   "libreoffice",  NULL,       1 << 4,       0,           -1 },
-	{ "Droidcam", NULL,       NULL,       1 << 2,       0,           -1 },
-	{ "zoom",     NULL,       NULL,       1 << 5,       0,           -1 },
-	{ "Apprun",   NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "Godot",    NULL,       NULL,       1 << 7,       0,           -1 },
+	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Gimp",     NULL,       NULL,       1 << 5,       0, 		  0,    	0,           -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 8,       0, 		  0, 		0,           -1 },
+	{ NULL,       term,       NULL,       1 << 1,       0, 		  1, 		0,           -1 },
+	{ "Brave",    NULL,       NULL,       1 << 3,       0, 		  0, 		0,           -1 },
+	{ "Teams",    NULL,       NULL,       1 << 5,       0, 		  0, 		0,           -1 },
+	{ "Caprine",  NULL,       NULL,       1 << 6,       0, 		  0, 		0,            1 },
+	{ "discord",  NULL,       NULL,       1 << 6,       0, 		  0, 		0,            1 },
+	{ NULL,   "libreoffice",  NULL,       1 << 4,       0, 		  0, 		0,           -1 },
+	{ "Droidcam", NULL,       NULL,       1 << 2,       0, 		  0, 		0,           -1 },
+	{ "zoom",     NULL,       NULL,       1 << 5,       0, 		  0, 		0,           -1 },
+	{ "Apprun",   NULL,       NULL,       1 << 8,       0, 		  0, 		0,           -1 },
+	{ "Godot",    NULL,       NULL,       1 << 7,       0, 		  0, 		0,           -1 },
 
-	{ NULL,       "spterm",	  NULL,	      SPTAG(0),     1,		 -1 },
-	{ NULL,       "spranger", NULL,	      SPTAG(1),     1,		 -1 },
-	{ NULL,       "spcalc",   NULL,	      SPTAG(2),     1,		 -1 },
-	{ NULL,       "spcmus",   NULL,	      SPTAG(3),     1,		 -1 },
+	{ "MuPDF",    NULL,       NULL,       0,            0, 		  0, 		1,           -1 },
+                                                                                         
+	{ NULL,       "spterm",	  NULL,	      SPTAG(0),     1, 		  0, 		0,	    -1 },
+	{ NULL,       "spranger", NULL,	      SPTAG(1),     1, 		  0, 		0,	    -1 },
+	{ NULL,       "spcalc",   NULL,	      SPTAG(2),     1, 		  0, 		0,	    -1 },
+	{ NULL,       "spcmus",   NULL,	      SPTAG(3),     1, 		  0, 		0,	    -1 },
+
+	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
 /* layout(s) */
 static float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static int nmaster     = 1;    /* number of clients in master area */
 static int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+static const int decorhints  = 1;    /* 1 means respect decoration hints */
 
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
@@ -116,8 +122,10 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { term, NULL };
 static const char *browsercmd[]  = { "brave", NULL };
+static const char *teamscmd[]  = { "teams", NULL };
+static const char *vwcmd[]  = {term, "-e", "nvim", "-c", "VimwikiIndex", NULL };
 static const char *fmcmd[]  = { term, "-e", "ranger", NULL };
-static const char *languagecmd[]  = { "language.sh", "1", NULL };
+static const char *languagecmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/language.sh", "1", NULL };
 
 static const char *incrvolcmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/volume.sh", "+", NULL };
 static const char *decrvolcmd[]  = { "/mnt/data/SharedFiles/Documents/Sources/Suckless/dwmblocks/blocks/volume.sh", "-", NULL };
@@ -162,8 +170,11 @@ ResourcePref resources[] = {
 
 static Key keys[] = {
 	/* eifier                     key        function        argument */
+	{ MODKEY,                       AnyKey,    spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
+	{ MODKEY,                       XK_s,      spawn,          {.v = teamscmd } },
+	{ MODKEY,                       XK_w,      spawn,          {.v = vwcmd } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = fmcmd } },
 	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = languagecmd } },
 	{ MODKEY, 	                XK_F4,      spawn,          {.v = languagecmd } },
